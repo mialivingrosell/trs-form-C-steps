@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRS Ansökan – Variant B</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #333; background: #fff; line-height: 1.6; }
+
+  .header { position: sticky; top: 0; z-index: 50; background: #fff; display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 3px solid #1a5c6b; }
+  .logo { font-size: 28px; font-weight: 700; color: #1a5c6b; }
+  .logo .dot { color: #e87722; }
+  .logo .sep { color: #999; font-weight: 300; margin: 0 8px; }
+  .logo .title { font-size: 22px; font-weight: 400; color: #333; }
+  .header-link { border: 1px solid #999; padding: 6px 20px; text-decoration: none; color: #333; border-radius: 4px; font-size: 14px; }
+
+  .layout { display: flex; min-height: calc(100vh - 70px); }
+
+  /* Sidebar */
+  .sidebar { width: 220px; position: sticky; top: 70px; height: calc(100vh - 70px); background: #f8f9fa; border-right: 1px solid #e5e5e5; padding: 32px 0; flex-shrink: 0; overflow-y: auto; }
+  .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; font-size: 14px; color: #888; cursor: pointer; border-left: 3px solid transparent; transition: all 0.2s; text-decoration: none; }
+  .nav-item:hover { color: #1a5c6b; background: #eef6f8; }
+  .nav-item.active { color: #1a5c6b; font-weight: 600; border-left-color: #1a5c6b; background: #eef6f8; }
+  .nav-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid #ccc; flex-shrink: 0; }
+  .nav-item.active .nav-dot { background: #1a5c6b; border-color: #1a5c6b; }
+
+  /* Main content */
+  .content { flex: 1; max-width: 780px; padding: 32px 40px 80px; }
+
+  /* Sections */
+  .form-section { padding-bottom: 48px; margin-bottom: 16px; border-bottom: 1px solid #eee; scroll-margin-top: 80px; }
+  .form-section:last-child { border-bottom: none; }
+  h2 { font-size: 24px; font-weight: 400; margin-bottom: 24px; color: #222; }
+  h3 { font-size: 18px; font-weight: 500; margin: 24px 0 16px; color: #333; }
+
+  /* Info box */
+  .info-box { background: #eef6f8; border: 1px solid #c8dfe4; border-radius: 8px; padding: 20px 24px; margin-bottom: 40px; }
+  .info-box-toggle { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 18px; font-weight: 500; }
+  .info-box-toggle .arrow { transition: transform 0.3s; font-size: 14px; }
+  .info-box-toggle .arrow.collapsed { transform: rotate(-90deg); }
+  .info-box-content { margin-top: 16px; }
+  .info-box-content ul { list-style: none; }
+  .info-box-content li { padding: 6px 0; padding-left: 32px; position: relative; }
+  .info-box-content li::before { content: '✓'; position: absolute; left: 4px; color: #1a5c6b; font-weight: 700; }
+  .info-box-content p { margin-top: 16px; font-size: 14px; line-height: 1.6; }
+  .info-box-content a { color: #1a5c6b; }
+
+  /* Form elements */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 14px; }
+  .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group textarea {
+    width: 100%; padding: 10px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 15px; font-family: inherit;
+  }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #1a5c6b; box-shadow: 0 0 0 2px rgba(26,92,107,0.15); }
+  .form-row { display: flex; gap: 16px; }
+  .form-row .form-group { flex: 1; }
+  .form-row .form-group.small { flex: 0 0 35%; }
+  .hämta-row { display: flex; gap: 12px; align-items: flex-end; }
+  .hämta-row input { flex: 1; max-width: 280px; }
+  .btn-hämta { padding: 10px 24px; background: #1a5c6b; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; font-weight: 500; height: 42px; }
+  .btn-hämta:hover { background: #154d5a; }
+  .mer-info { font-size: 13px; color: #1a5c6b; margin-left: 8px; cursor: pointer; text-decoration: none; }
+  .company-info { background: #f9f9f9; padding: 12px 16px; border-radius: 4px; margin: 8px 0 20px; font-size: 14px; line-height: 1.6; display: none; }
+
+  .radio-group, .checkbox-group { margin-bottom: 20px; }
+  .radio-group > label, .checkbox-group > label { font-weight: 600; display: block; margin-bottom: 8px; font-size: 14px; }
+  .radio-option, .checkbox-option { display: block; padding: 4px 0; font-size: 14px; }
+  .radio-option input, .checkbox-option input { margin-right: 8px; }
+  .radio-inline { display: flex; gap: 24px; }
+  .radio-inline .radio-option { display: inline-flex; align-items: center; }
+  .helper-text { font-size: 13px; color: #666; margin-bottom: 8px; }
+  .note-text { font-size: 13px; color: #666; font-style: italic; margin: -8px 0 20px; }
+  .info-paragraph { background: #f5f5f5; padding: 16px; border-radius: 6px; font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+
+  /* Review */
+  .review-section { border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+  .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .review-header h3 { margin: 0; font-size: 17px; }
+  .review-edit { color: #1a5c6b; text-decoration: none; font-size: 14px; cursor: pointer; }
+  .review-edit:hover { text-decoration: underline; }
+  .review-content { font-size: 14px; line-height: 1.8; }
+  .review-content strong { font-weight: 600; }
+  .consent-box { margin: 24px 0; }
+  .consent-box label { font-size: 14px; line-height: 1.6; cursor: pointer; }
+  .consent-box input { margin-right: 8px; }
+  .consent-link { display: block; margin-top: 8px; color: #1a5c6b; font-size: 14px; }
+
+  .btn { padding: 10px 24px; border-radius: 4px; font-size: 14px; cursor: pointer; font-family: inherit; }
+  .btn-primary { background: #1a5c6b; color: #fff; border: none; font-weight: 500; }
+  .btn-primary:hover { background: #154d5a; }
+  .btn-primary:disabled { background: #a0b8bd; cursor: not-allowed; }
+
+  .footer { text-align: center; padding: 40px 24px; border-top: 3px solid #1a5c6b; }
+  .footer h3 { font-size: 20px; margin-bottom: 8px; }
+  .footer p { font-size: 14px; color: #666; }
+
+  .success-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:100; justify-content:center; align-items:center; }
+  .success-overlay.show { display:flex; }
+  .success-box { background:#fff; padding:48px; border-radius:12px; text-align:center; max-width:500px; }
+  .success-box h2 { color:#1a5c6b; margin-bottom:16px; }
+
+  /* Mobile nav */
+  .mobile-nav { display: none; position: sticky; top: 60px; z-index: 40; background: #f8f9fa; border-bottom: 1px solid #e5e5e5; overflow-x: auto; white-space: nowrap; padding: 0; }
+  .mobile-nav .nav-item { display: inline-flex; padding: 12px 16px; border-left: none; border-bottom: 3px solid transparent; font-size: 13px; }
+  .mobile-nav .nav-item.active { border-bottom-color: #1a5c6b; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .mobile-nav { display: block; }
+    .content { padding: 24px 16px 80px; }
+    .form-row { flex-direction: column; gap: 0; }
+    .form-row .form-group.small { flex: 1; }
+    .header { padding: 12px 16px; }
+    .logo { font-size: 22px; }
+    .logo .title { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">trs<span class="dot">.</span><span class="sep">|</span><span class="title">Ansökan</span></div>
+  <a href="#" class="header-link">trs.se</a>
+</div>
+
+<div class="mobile-nav" id="mobileNav">
+  <a class="nav-item active" href="#om-dig" data-section="om-dig"><span class="nav-dot"></span>Om dig</a>
+  <a class="nav-item" href="#arbetsgivare" data-section="arbetsgivare"><span class="nav-dot"></span>Arbetsgivare</a>
+  <a class="nav-item" href="#anstallning" data-section="anstallning"><span class="nav-dot"></span>Anställning</a>
+  <a class="nav-item" href="#ovrigt" data-section="ovrigt"><span class="nav-dot"></span>Övrigt</a>
+  <a class="nav-item" href="#granska" data-section="granska"><span class="nav-dot"></span>Granska</a>
+</div>
+
+<div class="layout">
+  <nav class="sidebar">
+    <a class="nav-item active" href="#om-dig" data-section="om-dig"><span class="nav-dot"></span>Om dig</a>
+    <a class="nav-item" href="#arbetsgivare" data-section="arbetsgivare"><span class="nav-dot"></span>Arbetsgivare</a>
+    <a class="nav-item" href="#anstallning" data-section="anstallning"><span class="nav-dot"></span>Anställning</a>
+    <a class="nav-item" href="#ovrigt" data-section="ovrigt"><span class="nav-dot"></span>Övrigt</a>
+    <a class="nav-item" href="#granska" data-section="granska"><span class="nav-dot"></span>Granska & skicka</a>
+  </nav>
+
+  <main class="content">
+    <!-- Info box -->
+    <div class="info-box">
+      <div class="info-box-toggle" onclick="toggleInfoBox()">
+        Detta behöver du för att fullfölja ansökan
+        <span class="arrow" id="infoArrow">▼</span>
+      </div>
+      <div class="info-box-content" id="infoContent">
+        <ul>
+          <li>Organisationsnummer till din senaste arbetsgivare</li>
+          <li>Kontaktperson hos din senaste arbetsgivare. Namn, telefonnummer och e-postadress.</li>
+          <li>Uppgifter om anställningen: anställningsdatum och arbetstid, lön m.m.</li>
+          <li>Arbetsgivarintyg från senaste anställningen</li>
+          <li>Eventuellt: uppgifter om tidigare anställningar</li>
+          <li>I så fall: arbetsgivarintyg eller anställningsintyg från tidigare anställningar</li>
+        </ul>
+        <p>När du har fyllt i dina uppgifter skickar du formuläret till TRS. När vi har granskat ansökan får du besked från TRS om din ansökan är godkänd. Då tilldelas du också en rådgivare som tar en första kontakt.</p>
+        <p><a href="#">Här kan du läsa om hur TRS hanterar dina personuppgifter - GDPR</a></p>
+      </div>
+    </div>
+
+    <!-- Section 1: Om dig -->
+    <section class="form-section" id="om-dig">
+      <h2>Uppgifter om dig som söker</h2>
+      <div class="form-group">
+        <label>Personnummer</label>
+        <div class="hämta-row">
+          <input type="text" id="pnr" placeholder="ååååmmdd-xxxx">
+          <button class="btn-hämta" onclick="hämtaPerson()">Hämta</button>
+        </div>
+      </div>
+      <div class="form-group"><label>Förnamn</label><input type="text" id="fname"></div>
+      <div class="form-group"><label>Efternamn</label><input type="text" id="lname"></div>
+      <div class="form-group"><label>Postadress</label><input type="text" id="address"></div>
+      <div class="form-row">
+        <div class="form-group small"><label>Postnummer</label><input type="text" id="zip"></div>
+        <div class="form-group"><label>Ort</label><input type="text" id="city"></div>
+      </div>
+      <div class="form-group"><label>E-post</label><input type="text" id="email"></div>
+      <div class="form-group"><label>Telefonnummer</label><input type="text" id="phone"></div>
+    </section>
+
+    <!-- Section 2: Arbetsgivare -->
+    <section class="form-section" id="arbetsgivare">
+      <h2>Uppgifter om din senaste arbetsgivare</h2>
+      <div class="form-group">
+        <label>Organisationsnummer <a href="#" class="mer-info">ℹ mer info</a></label>
+        <div class="hämta-row">
+          <input type="text" id="orgnr" placeholder="xxxxxx-xxxx">
+          <button class="btn-hämta" onclick="hämtaOrg()">Hämta</button>
+        </div>
+      </div>
+      <div class="company-info" id="companyInfo">
+        Trygghetsrådet TRS<br>Rehnsgatan 11<br>STOCKHOLM 113 57
+      </div>
+      <h3>Uppgifter om kontaktperson hos arbetsgivare</h3>
+      <div class="form-group"><label>Förnamn</label><input type="text" id="kp-fname"></div>
+      <div class="form-group"><label>Efternamn</label><input type="text" id="kp-lname"></div>
+      <div class="form-group"><label>Telefonnummer</label><input type="text" id="kp-phone"></div>
+      <div class="form-group"><label>E-post</label><input type="text" id="kp-email"></div>
+    </section>
+
+    <!-- Section 3: Anställning -->
+    <section class="form-section" id="anstallning">
+      <h2>Senaste anställning (inom TRS område)</h2>
+      <div class="info-paragraph">För att kunna få stöd av TRS måste du under de senaste 36 månaderna ha varit anställd minst 12 månader hos en eller flera arbetsgivare, alla anställningar måste inte ha varit hos en TRS-ansluten, bara den senaste. Anställningstiden behöver inte ha varit sammanhängande och den behöver inte ha varit hos samma arbetsgivare hela tiden.</div>
+
+      <div class="form-row">
+        <div class="form-group"><label>Började anställning</label><input type="text" placeholder="åååå-mm-dd" id="emp-start"></div>
+        <div class="form-group"><label>Anställning upphörde</label><input type="text" placeholder="åååå-mm-dd" id="emp-end"></div>
+      </div>
+      <div class="radio-group">
+        <label>Ordinarie arbetstid</label>
+        <div class="radio-inline">
+          <label class="radio-option"><input type="radio" name="worktime" value="Heltid"> Heltid</label>
+          <label class="radio-option"><input type="radio" name="worktime" value="Deltid"> Deltid</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Anställningen har upphört i procent</label>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <input type="number" id="emp-pct" style="width:80px;"> <span>%</span>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Aktuell grundlön</label><input type="text" placeholder="Kr/månad" id="salary"></div>
+        <div class="form-group"><label>Gäller från</label><input type="text" placeholder="åååå-mm-dd" id="salary-from"></div>
+      </div>
+      <p class="note-text">Observera att det är deltidslönen du ska ange vid deltidsanställning</p>
+      <div class="form-group">
+        <label><strong>Fasta tillägg eller förmåner</strong></label>
+        <p class="helper-text">(Kr/månad t ex provision, tantiem, bonus, skift, jour, eller beredskap) <a href="#" class="mer-info">ℹ mer info</a></p>
+        <input type="number" id="benefits" value="0" style="width:120px;">
+      </div>
+      <div class="form-group"><label>Senaste befattning/yrke</label><input type="text" id="jobtitle"></div>
+      <div class="radio-group">
+        <label>Bilaga</label>
+        <label class="radio-option"><input type="radio" name="bilaga" value="upload"> Ladda upp Arbetsgivarintyg nu</label>
+        <label class="radio-option"><input type="radio" name="bilaga" value="post"> Jag skickar in Arbetsgivarintyg per post</label>
+      </div>
+
+      <h2>Tidigare anställningar inom TRS-område</h2>
+      <div class="info-paragraph">För att kunna få stöd av TRS måste du under de senaste 36 månaderna ha varit anställd minst 12 månader hos en eller flera arbetsgivare, alla anställningar måste inte ha varit hos en TRS-ansluten, bara den senaste. Anställningstiden behöver inte ha varit sammanhängande och den behöver inte ha varit hos samma arbetsgivare hela tiden.</div>
+      <button class="btn btn-primary" onclick="alert('Funktionalitet för att lägga till fler anställningar')">Lägg till fler anställningar</button>
+    </section>
+
+    <!-- Section 4: Övrigt -->
+    <section class="form-section" id="ovrigt">
+      <h2>Övrig information om dig</h2>
+
+      <div class="radio-group">
+        <label>Har du någon av dessa kollektivavtalade försäkringar?</label>
+        <label class="radio-option"><input type="radio" name="insurance" value="ITP1"> Collectum ITP1</label>
+        <label class="radio-option"><input type="radio" name="insurance" value="ITP2"> Collectum ITP2</label>
+        <label class="radio-option"><input type="radio" name="insurance" value="KTP"> KTP</label>
+        <label class="radio-option"><input type="radio" name="insurance" value="SPV"> SPV</label>
+        <label class="radio-option"><input type="radio" name="insurance" value="Nej"> Nej, ingen avtalad försäkring</label>
+      </div>
+
+      <div class="checkbox-group">
+        <label>Utbildning (flerval, valfritt)</label>
+        <label class="checkbox-option"><input type="checkbox" name="edu" value="Grundskola"> Grundskola</label>
+        <label class="checkbox-option"><input type="checkbox" name="edu" value="Gymnasium"> Gymnasium</label>
+        <label class="checkbox-option"><input type="checkbox" name="edu" value="Folkhögskola"> Folkhögskola</label>
+        <label class="checkbox-option"><input type="checkbox" name="edu" value="Högskola/Universitet"> Högskola/Universitet</label>
+        <label class="checkbox-option"><input type="checkbox" name="edu" value="Yrkesinriktad utbildning"> Yrkesinriktad utbildning</label>
+      </div>
+
+      <div class="radio-group">
+        <label>Har du sjukersättning?</label>
+        <div class="radio-inline">
+          <label class="radio-option"><input type="radio" name="sick" value="Ja"> Ja</label>
+          <label class="radio-option"><input type="radio" name="sick" value="Nej"> Nej</label>
+        </div>
+      </div>
+      <div class="radio-group">
+        <label>Har du förtida uttag av pension?</label>
+        <div class="radio-inline">
+          <label class="radio-option"><input type="radio" name="pension" value="Ja"> Ja</label>
+          <label class="radio-option"><input type="radio" name="pension" value="Nej"> Nej</label>
+        </div>
+      </div>
+      <div class="radio-group">
+        <label>Är du medlem i någon a-kassa?</label>
+        <div class="radio-inline">
+          <label class="radio-option"><input type="radio" name="akassa" value="Ja"> Ja</label>
+          <label class="radio-option"><input type="radio" name="akassa" value="Nej"> Nej</label>
+        </div>
+      </div>
+      <div class="radio-group">
+        <label>Har du redan fått en ny anställning (valfritt)?</label>
+        <p class="helper-text">Om Ja. Skicka in ansökan ändå, efterskydd kan gälla om du blir uppsagd från det nya arbetet också eller om det är en tidsbegränsad anställning.</p>
+        <div class="radio-inline">
+          <label class="radio-option"><input type="radio" name="newjob" value="Ja"> Ja</label>
+          <label class="radio-option"><input type="radio" name="newjob" value="Nej"> Nej</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Övrigt</label>
+        <p class="helper-text">Övriga upplysningar om dig (valfritt)</p>
+        <textarea rows="4" id="other-info"></textarea>
+      </div>
+    </section>
+
+    <!-- Section 5: Granska -->
+    <section class="form-section" id="granska">
+      <h2>Granska och skicka</h2>
+
+      <div class="review-section">
+        <div class="review-header">
+          <h3>1. Om dig</h3>
+          <a class="review-edit" href="#om-dig">Ändra ✏️</a>
+        </div>
+        <div class="review-content">
+          Personnummer: 19790918-6905<br>Mia Living Rosell<br>Högalidsgatan 40a lgh 1403<br>117 30 Stockholm<br><br>mialiving@gmail.com<br>0733466855
+        </div>
+      </div>
+
+      <div class="review-section">
+        <div class="review-header">
+          <h3>2. Arbetsgivare</h3>
+          <a class="review-edit" href="#arbetsgivare">Ändra ✏️</a>
+        </div>
+        <div class="review-content">
+          Organisationsnummer: 802400-6853<br>Trygghetsrådet TRS<br>Rehnsgatan 11<br>113 57 STOCKHOLM<br><br>Kontaktperson:<br>Mia, Living Rosell, 0733466855, mia.living@digitalist.com
+        </div>
+      </div>
+
+      <div class="review-section">
+        <div class="review-header">
+          <h3>3. Anställning</h3>
+          <a class="review-edit" href="#anstallning">Ändra ✏️</a>
+        </div>
+        <div class="review-content">
+          Anställningsdatum: 2022-02-01<br>Anställningen upphörde: 2026-02-01<br>Deltid: 50%<br>Anställningen har upphört till: 100%<br>Grundlön: 20000, från 2025-05-01<br>Fasta tillägg eller förmåner: Nej<br>Roll/Titel: Designer<br>Arbetsgivarintyg: Skickas med post<br><br><strong>Tidigare anställningar</strong>
+        </div>
+      </div>
+
+      <div class="review-section">
+        <div class="review-header">
+          <h3>4. Övrigt</h3>
+          <a class="review-edit" href="#ovrigt">Ändra ✏️</a>
+        </div>
+        <div class="review-content">
+          <strong>Kollektivavtalad försäkring</strong><br>Nej, ingen avtalad försäkring<br><br>
+          <strong>Utbildning</strong><br>Högskola/Universitet<br><br>
+          <strong>Sjukersättning</strong><br>Nej, ingen sjukersättning<br><br>
+          <strong>Förtida pension</strong><br>Nej, ingen förtida pension<br><br>
+          <strong>Medlem i a-kassa?</strong><br>Nej, har ej medlemskap i a-kassa<br><br>
+          <strong>Ny anställning</strong><br>Nej, ingen ny anställning
+        </div>
+      </div>
+
+      <div class="consent-box">
+        <label>
+          <input type="checkbox" id="consent" onchange="toggleSubmit()">
+          Jag intygar att dessa uppgifter är riktiga och samtycker till att Trygghetsrådet TRS behandlar mina personuppgifter i den omfattning som krävs för att jag ska kunna få stöd.
+        </label>
+        <a href="#" class="consent-link">Här kan du läsa hur och varför TRS behandlar dina personuppgifter</a>
+      </div>
+
+      <button class="btn btn-primary" id="submitBtn" disabled onclick="submitForm()">Spara och skicka</button>
+    </section>
+  </main>
+</div>
+
+<div class="footer">
+  <h3>Har du frågor?</h3>
+  <p>Kontakta oss på TRS: 08 442 97 30, trygghetsradet.trs@trs.se</p>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <h2>Tack för din ansökan!</h2>
+    <p>Din ansökan har skickats till TRS. Du kommer att få en bekräftelse via e-post.</p>
+    <br>
+    <button class="btn btn-primary" onclick="document.getElementById('successOverlay').classList.remove('show')">Stäng</button>
+  </div>
+</div>
+
+<script>
+// Smooth scroll for nav links
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Intersection Observer for active section
+const sections = document.querySelectorAll('.form-section');
+const navItems = document.querySelectorAll('.sidebar .nav-item');
+const mobileNavItems = document.querySelectorAll('.mobile-nav .nav-item');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(n => n.classList.toggle('active', n.dataset.section === id));
+      mobileNavItems.forEach(n => n.classList.toggle('active', n.dataset.section === id));
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+
+function toggleInfoBox() {
+  const content = document.getElementById('infoContent');
+  const arrow = document.getElementById('infoArrow');
+  if (content.style.display === 'none') {
+    content.style.display = 'block';
+    arrow.classList.remove('collapsed');
+  } else {
+    content.style.display = 'none';
+    arrow.classList.add('collapsed');
+  }
+}
+
+function hämtaPerson() {
+  const pnr = document.getElementById('pnr');
+  if (!pnr.value) pnr.value = '19790918-6905';
+  setTimeout(() => {
+    document.getElementById('fname').value = 'Mia';
+    document.getElementById('lname').value = 'Living Rosell';
+    document.getElementById('address').value = 'Högalidsgatan 40a lgh 1403';
+    document.getElementById('zip').value = '117 30';
+    document.getElementById('city').value = 'Stockholm';
+    document.getElementById('email').value = 'mialiving@gmail.com';
+    document.getElementById('phone').value = '0733466855';
+  }, 300);
+}
+
+function hämtaOrg() {
+  const orgnr = document.getElementById('orgnr');
+  if (!orgnr.value) orgnr.value = '802400-6853';
+  setTimeout(() => {
+    document.getElementById('companyInfo').style.display = 'block';
+  }, 300);
+}
+
+function toggleSubmit() {
+  document.getElementById('submitBtn').disabled = !document.getElementById('consent').checked;
+}
+
+function submitForm() {
+  document.getElementById('successOverlay').classList.add('show');
+}
+</script>
+</body>
+</html>

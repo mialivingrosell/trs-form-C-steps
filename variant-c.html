@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRS Ansökan – Arbetsgivare (Variant C)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&family=PT+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  /* === TRS Design System Tokens === */
+  :root {
+    --color-fandango: #b1418c;
+    --color-fandango-light: #efd9e8;
+    --color-fandango-dark: #8e3470;
+    --color-blue-dark: #1e6582;
+    --color-sea-green-light: #cee5e4;
+    --color-sea-green: #5ba09e;
+    --color-sea-green-dark: #3d7a78;
+    --color-grey-dark: #34393e;
+    --color-black: #000;
+    --color-white: #fff;
+    --color-grey-light: #f5f5f5;
+    --radius: 12px;
+    --radius-sm: 6px;
+    --spacing-s: 16px;
+    --spacing-r: 24px;
+    --font-ui: 'Roboto', sans-serif;
+    --font-body: 'PT Serif', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-ui); color: var(--color-grey-dark); background: var(--color-white); line-height: 1.6; }
+
+  /* Header */
+  .header { display: flex; align-items: center; justify-content: space-between; padding: var(--spacing-s) var(--spacing-r); border-bottom: 3px solid var(--color-sea-green); max-width: 900px; margin: 0 auto; }
+  .logo { font-size: 28px; font-weight: 700; color: var(--color-blue-dark); }
+  .logo .dot { color: #e87722; }
+  .logo .sep { color: #999; font-weight: 300; margin: 0 8px; }
+  .logo .title { font-size: 23px; font-weight: 400; color: var(--color-grey-dark); }
+  .header-link { border: 1px solid var(--color-grey-dark); padding: 8px 20px; text-decoration: none; color: var(--color-grey-dark); border-radius: var(--radius); font-size: 16px; font-weight: 400; }
+  .header-link:hover { background: var(--color-grey-light); }
+
+  /* Stepper */
+  .stepper-bar { background: none; padding: var(--spacing-r) 0; }
+  .stepper-bar.hidden { display: none; }
+  .stepper { display: flex; align-items: center; justify-content: center; max-width: 750px; margin: 0 auto; gap: 0; }
+  .step-item { display: flex; flex-direction: column; align-items: center; flex: 1; position: relative; }
+  .step-circle { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 600; border: 2px solid #ccc; color: #999; background: var(--color-white); position: relative; z-index: 1; }
+  .step-circle.active { background: var(--color-sea-green); color: var(--color-white); border-color: var(--color-sea-green); }
+  .step-circle.done { background: var(--color-sea-green); color: var(--color-white); border-color: var(--color-sea-green); }
+  .step-label { font-size: 13px; margin-top: 6px; color: #999; text-align: center; }
+  .step-label.active { color: var(--color-sea-green-dark); font-weight: 600; }
+  .step-item:not(:last-child)::after { content: ''; position: absolute; top: 19px; left: calc(50% + 19px); width: calc(100% - 38px); height: 2px; background: #ccc; z-index: 0; }
+  .step-item.done-line::after { background: var(--color-sea-green); }
+
+  /* Main */
+  .main { max-width: 750px; margin: 0 auto; padding: 32px var(--spacing-r); }
+  h2 { font-size: 28px; font-weight: 600; margin-bottom: 8px; color: var(--color-black); letter-spacing: -0.2px; }
+  h2 + .info-paragraph, h2 + .form-group, h2 + .form-row, h2 + .question-card, h2 + .radio-group, h2 + .checkbox-group, h2 + .field-card, h2 + .consent-top, h2 + .info-box { margin-top: var(--spacing-s); }
+  h3 { font-size: 23px; font-weight: 600; margin: 28px 0 var(--spacing-s); color: var(--color-black); }
+  .sub-heading { font-size: 20px; font-weight: 500; color: var(--color-grey-dark); margin-bottom: 4px; }
+
+  /* Section grouping card */
+  .field-card { background: var(--color-sea-green-light); border: none; border-radius: var(--radius); padding: var(--spacing-r); margin-bottom: 20px; }
+  .field-card .form-group:last-child, .field-card .radio-group:last-child { margin-bottom: 0; }
+  .field-card .form-row { margin-bottom: 0; }
+  .field-card-label { font-size: 19px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--color-black); margin-bottom: var(--spacing-s); }
+
+  /* Checklist step */
+  .checklist-item { display: flex; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e5e7eb; font-size: 16px; line-height: 24px; flex-wrap: wrap; }
+  .checklist-item:last-child { border-bottom: none; }
+  .checklist-item input[type="checkbox"] { width: 22px; height: 22px; margin-top: 1px; flex-shrink: 0; accent-color: var(--color-sea-green); cursor: pointer; }
+  .checklist-item label { cursor: pointer; flex: 1; }
+  .checklist-intro { font-family: var(--font-body); font-size: 17px; margin-bottom: var(--spacing-r); line-height: 26px; }
+  .checklist-gdpr { margin-top: var(--spacing-r); font-size: 16px; }
+  .checklist-gdpr a { color: var(--color-sea-green-dark); }
+
+  /* Collapsible checklist help */
+  .checklist-help-toggle { background: none; border: none; color: var(--color-black); cursor: pointer; font-size: 16px; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; font-weight: 400; line-height: 24px; padding: 0; }
+  .checklist-help-toggle:hover { text-decoration: underline; }
+  .checklist-help-toggle .chevron { display: inline-block; font-size: 12px; transition: transform 0.2s; }
+  .checklist-help-toggle.open .chevron { transform: rotate(180deg); }
+  .checklist-help-text { display: none; width: 100%; padding: 8px 0 4px 34px; font-size: 14px; color: #555; line-height: 1.5; }
+  .checklist-help-text.open { display: block; }
+
+  /* Info box for "Att tänka på" */
+  .info-box { margin-bottom: var(--spacing-r); }
+  .info-box p { font-size: 15px; margin-bottom: 12px; line-height: 1.5; }
+  .info-box ul { padding-left: 20px; font-size: 15px; line-height: 1.7; }
+  .info-box ul li { margin-bottom: 4px; }
+  .info-box a { color: var(--color-sea-green-dark); font-weight: 600; }
+  .info-box a:hover { text-decoration: underline; }
+
+  /* Form */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-weight: 500; margin-bottom: 8px; font-size: 16px; line-height: 24px; color: var(--color-black); }
+  .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group textarea {
+    width: 100%; padding: 11px 14px; border: 1px solid var(--color-black); border-radius: var(--radius); font-size: 16px; font-family: var(--font-ui); height: 48px; line-height: 24px;
+  }
+  .form-group textarea { height: auto; }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--color-fandango); box-shadow: 0 0 0 2px rgba(177,65,140,0.2); }
+  .form-row { display: flex; gap: var(--spacing-s); }
+  .form-row .form-group { flex: 1; }
+  .form-row .form-group.small { flex: 0 0 35%; }
+  .mer-info { font-size: 14px; color: var(--color-fandango); margin-left: 8px; cursor: pointer; text-decoration: none; font-weight: 400; }
+  .mer-info:hover { text-decoration: underline; }
+
+  /* Radio / Checkbox */
+  .radio-group, .checkbox-group { margin-bottom: 20px; }
+  .radio-group > label:not(.radio-option), .checkbox-group > label:not(.checkbox-option) { font-weight: 600; display: block; margin-bottom: 10px; font-size: 16px; line-height: 24px; color: var(--color-black); }
+  .radio-option, .checkbox-option { display: block; padding: 5px 0; font-size: 16px; line-height: 24px; font-weight: 400; }
+  .radio-option input, .checkbox-option input { margin-right: 10px; accent-color: var(--color-sea-green-dark); }
+  .radio-inline { display: flex; gap: var(--spacing-r); }
+  .radio-inline .radio-option { display: inline-flex; align-items: center; }
+
+  /* Question card */
+  .question-card { background: var(--color-sea-green-light); border: none; border-radius: var(--radius); padding: 20px var(--spacing-r); margin-bottom: var(--spacing-s); }
+  .question-card .radio-group, .question-card .checkbox-group, .question-card .form-group { margin-bottom: 0; }
+
+  .helper-text { font-size: 14px; color: #666; margin-bottom: 8px; line-height: 22px; }
+  .helper-text-below { font-size: 14px; color: #666; margin-top: -12px; margin-bottom: 20px; line-height: 22px; }
+  .note-text { font-size: 14px; color: #666; font-style: italic; margin: -8px 0 20px; }
+  .info-paragraph { font-family: var(--font-body); background: var(--color-sea-green-light); padding: var(--spacing-s) 20px; border-radius: var(--radius); font-size: 17px; margin-bottom: var(--spacing-r); line-height: 26px; }
+
+  /* Consent checkbox at top of step */
+  .consent-top { margin-bottom: var(--spacing-r); padding: var(--spacing-s) 20px; background: var(--color-sea-green-light); border-radius: var(--radius); }
+  .consent-top label { font-size: 15px; line-height: 1.5; cursor: pointer; display: flex; align-items: baseline; gap: 10px; }
+  .consent-top input { flex-shrink: 0; accent-color: var(--color-sea-green-dark); }
+
+  /* Bilaga card */
+  .bilaga-card { border: 1px solid #ddd; border-radius: var(--radius); padding: var(--spacing-s) var(--spacing-r); margin-bottom: var(--spacing-s); background: var(--color-white); }
+  .bilaga-card .bilaga-title { font-weight: 600; font-size: 15px; margin-bottom: 10px; color: var(--color-black); }
+  .bilaga-card .radio-option { padding: 3px 0; }
+
+  /* Conditional field group */
+  .conditional-fields { display: none; }
+  .conditional-fields.visible { display: block; }
+
+  /* Date input with SVG calendar icon */
+  .date-input-wrap { position: relative; display: flex; align-items: center; }
+  .date-input-wrap .date-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; width: 20px; height: 20px; color: var(--color-black); z-index: 1; }
+  .date-input-wrap input { padding-left: 42px; }
+
+  /* File upload drop zone */
+  .file-upload-zone { border: 2px dashed #b0c4c3; border-radius: var(--radius); background: var(--color-white); padding: 32px; text-align: center; margin-top: 12px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+  .file-upload-zone:hover { border-color: var(--color-sea-green); background: #f0f7f7; }
+  .file-upload-zone.dragover { border-color: var(--color-sea-green); background: #e0efef; }
+  .file-upload-icon { margin-bottom: 12px; }
+  .file-upload-icon svg { width: 40px; height: 40px; color: var(--color-sea-green); }
+  .file-upload-text { font-size: 16px; font-weight: 500; color: var(--color-black); margin-bottom: 8px; }
+  .file-upload-link { color: var(--color-sea-green-dark); font-weight: 600; text-decoration: underline; cursor: pointer; font-size: 16px; }
+  .file-upload-link:hover { color: var(--color-fandango); }
+  .file-upload-max { font-size: 13px; color: #999; margin-top: 8px; }
+
+  /* Review cards */
+  .review-section { border: 1px solid #ddd; border-radius: var(--radius); padding: 20px var(--spacing-r); margin-bottom: 20px; }
+  .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+  .review-header h3 { margin: 0; font-size: 18px; }
+  .review-edit { color: var(--color-sea-green-dark); text-decoration: none; font-size: 16px; cursor: pointer; font-weight: 500; }
+  .review-edit:hover { text-decoration: underline; }
+  .review-content { font-size: 16px; line-height: 1.6; }
+  .review-content strong { font-weight: 600; }
+  .review-row { display: flex; padding: 6px 0; }
+  .review-label { flex: 0 0 200px; font-size: 14px; color: #666; }
+  .review-value { flex: 1; font-size: 16px; color: var(--color-black); }
+  .review-sub-heading { font-weight: 600; font-size: 15px; color: var(--color-black); margin-top: 16px; margin-bottom: 8px; padding-top: 12px; border-top: 1px solid #eee; }
+  .consent-box { margin: var(--spacing-r) 0; }
+  .consent-box label { font-size: 16px; line-height: 24px; cursor: pointer; }
+  .consent-box input { margin-right: 10px; accent-color: var(--color-sea-green-dark); }
+  .consent-link { display: block; margin-top: 8px; color: var(--color-sea-green-dark); font-size: 16px; }
+
+  /* Submit buttons on review step */
+  .submit-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+  .submit-buttons .btn { font-size: 16px; }
+
+  /* Bottom bar */
+  .bottom-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; border-top: 1px solid #e5e7eb; background: none; padding: 20px 0; }
+  .btn { padding: 0 var(--spacing-r); border-radius: var(--radius); font-size: 18px; font-weight: 600; cursor: pointer; font-family: var(--font-ui); height: 48px; display: inline-flex; align-items: center; justify-content: center; }
+  .btn-primary { background: var(--color-fandango); color: var(--color-white); border: none; }
+  .btn-primary:hover { background: var(--color-fandango-dark); }
+  .btn-primary:disabled { background: #d4a5c4; cursor: not-allowed; }
+  .btn-outline { background: var(--color-white); border: 1px solid var(--color-grey-dark); color: var(--color-grey-dark); }
+  .btn-outline:hover { border-color: var(--color-black); color: var(--color-black); }
+  .btn-secondary { background: none; border: 1px solid var(--color-fandango); color: var(--color-fandango); }
+  .btn-secondary:hover { background: var(--color-fandango-light); }
+  .right-buttons { display: flex; gap: 12px; align-items: center; }
+  .cancel-link { font-size: 16px; color: var(--color-grey-dark); text-decoration: none; cursor: pointer; }
+  .cancel-link:hover { text-decoration: underline; }
+
+  /* Confirmation page */
+  .confirmation-page { text-align: center; padding: 60px 0; }
+  .confirmation-icon { width: 80px; height: 80px; background: var(--color-sea-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
+  .confirmation-icon svg { width: 40px; height: 40px; color: var(--color-white); }
+  .confirmation-page h2 { margin-bottom: 16px; }
+  .confirmation-page p { font-size: 17px; line-height: 1.6; max-width: 500px; margin: 0 auto 24px; }
+  .confirmation-page .btn { margin-top: 8px; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 40px var(--spacing-r); border-top: 3px solid var(--color-fandango); margin-top: 0; }
+  .footer h3 { font-size: 23px; font-weight: 600; margin-bottom: 8px; color: var(--color-black); }
+  .footer p { font-size: 16px; color: #666; }
+
+  /* Step content */
+  .step-content { display: none; }
+  .step-content.active { display: block; }
+
+  @media (max-width: 600px) {
+    .form-row { flex-direction: column; gap: 0; }
+    .form-row .form-group.small { flex: 1; }
+    .stepper { gap: 0; padding: 0 8px; }
+    .step-label { font-size: 10px; }
+    .submit-buttons { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">trs<span class="dot">.</span><span class="sep">|</span><span class="title">Ansökan</span></div>
+  <a href="#" class="header-link">trs.se</a>
+</div>
+
+<div class="stepper-bar hidden" id="stepperBar">
+  <div class="stepper">
+    <div class="step-item" data-step="1">
+      <div class="step-circle active" id="sc1">1</div>
+      <div class="step-label active" id="sl1">Den uppsagda</div>
+    </div>
+    <div class="step-item" data-step="2">
+      <div class="step-circle" id="sc2">2</div>
+      <div class="step-label" id="sl2">Anställning</div>
+    </div>
+    <div class="step-item" data-step="3">
+      <div class="step-circle" id="sc3">3</div>
+      <div class="step-label" id="sl3">Orsak till uppsägning</div>
+    </div>
+    <div class="step-item" data-step="4">
+      <div class="step-circle" id="sc4">4</div>
+      <div class="step-label" id="sl4">Granska och skicka in</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- STEP 0: FÖRSIDA (ej i stepper) -->
+<div class="step-content active" id="step0">
+  <h2>Ansökan om stöd (arbetsgivare)</h2>
+  <p style="font-size:17px; line-height:1.6; margin-bottom:var(--spacing-r);">Här ansöker du som arbetsgivare om stöd för uppsagda medarbetare i din organisation.</p>
+
+  <div class="info-box">
+    <h3 style="margin-top:0;">Att tänka på vid uppsägning</h3>
+    <p>Gör allt i rätt ordning:</p>
+    <ol style="padding-left:20px; font-size:15px; line-height:1.7;">
+      <li style="margin-bottom:4px;">Kontakta din arbetsgivarorganisation för att processen ska gå rätt till arbetsrättsligt. Du behöver förhandla med facket. Ni ska vara överens om att arbetsbrist föreligger (eller sjukdom/ohälsa) och du ska bifoga ett förhandlingsprotokoll till ansökan.</li>
+      <li style="margin-bottom:4px;">Du som arbetsgivare kan få stöd av TRS inför uppsägningen, för att processen ska bli så bra som möjligt för alla inblandade. <a href="#">Kontakta våra rådgivare.</a></li>
+      <li style="margin-bottom:4px;">Var informerad om det stöd TRS erbjuder uppsagda. <a href="#">Du hittar mer information här.</a></li>
+      <li style="margin-bottom:4px;">För den som blir uppsagd på grund av arbetsbrist eller sjukdom måste arbetstiden ha varit minst åtta timmer per vecka.</li>
+    </ol>
+  </div>
+
+  <div class="field-card">
+    <div class="field-card-label">Det här behöver du ha tillhands för att kunna skicka in ansökan</div>
+
+    <p style="font-size:15px; margin-bottom:var(--spacing-s); line-height:1.5;">Kontrollera att du har följande uppgifter tillgängliga innan du börjar. Kryssa i varje punkt för att bekräfta.</p>
+
+    <div class="checklist-item">
+      <input type="checkbox" id="cl1" onchange="updateChecklist()">
+      <label for="cl1">Organisationsnummer</label>
+    </div>
+    <div class="checklist-item">
+      <input type="checkbox" id="cl2" onchange="updateChecklist()">
+      <label for="cl2">Personnummer, namn, adress och en giltig e-postadress till den som är uppsagd (se till att e-postadressen gäller efter arbetets avslut)</label>
+    </div>
+    <div class="checklist-item">
+      <input type="checkbox" id="cl3" onchange="updateChecklist()">
+      <label for="cl3">Uppgifter om anställningen: anställningsdatum och arbetstid, lön m.m.</label>
+    </div>
+    <div class="checklist-item">
+      <input type="checkbox" id="cl4" onchange="updateChecklist()">
+      <label for="cl4">Förhandlingsprotokoll och/eller andra formella handlingar</label>
+      <div style="width:100%; padding:8px 0 4px 34px; font-size:14px; color:#555; line-height:1.5;">Utan förhandlingsprotokoll behöver du ladda upp ett uppsägningsbevis eller annat dokument som styrker uppsägningen. Andra formella handlingar är uppgifter om lönegaranti vid konkurs och intyg som stärker sjukdom/ohälsa och arbetsförmågans omfattning (vid uppsägning på grund av sjukdom).</div>
+    </div>
+    <div class="checklist-item">
+      <input type="checkbox" id="cl5" onchange="updateChecklist()">
+      <label for="cl5">Du ska ha stämt av med den som är uppsagd så att den är informerad om och godkänner ansökan till TRS. Detta behövs eftersom vi genom ansökan behandlar personuppgifter enligt Dataskyddsförordningen.</label>
+    </div>
+  </div>
+
+  <div class="checklist-gdpr">
+    <a href="#">Här kan du läsa hur TRS behandlar personuppgifter - GDPR</a>
+  </div>
+
+  <div class="bottom-bar">
+    <div></div>
+    <div class="right-buttons">
+      <button class="btn btn-primary" id="startBtn" disabled onclick="goStep(1)">Gör ansökan →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 1: PERSONUPPGIFTER (stepper steg 1) -->
+<div class="step-content" id="step1">
+  <h2>Uppgifter om den uppsagde</h2>
+
+  <div class="consent-top">
+    <label>
+      <input type="checkbox" id="gdprConsent">
+      Jag har fått samtycke från den som sägs upp att få skicka in personuppgifterna till Trygghetsrådet TRS. Den uppsagda är medveten om att TRS kommer att lagra personuppgifterna i den omfattning som krävs för att TRS ska kunna ge stöd.
+    </label>
+  </div>
+
+  <div class="field-card">
+    <div class="field-card-label">Kontaktuppgifter</div>
+    <div class="form-group">
+      <label>Personnummer</label>
+      <div style="display:flex; gap:var(--spacing-s); align-items:flex-start; max-width:50%;">
+        <input type="text" id="pnr" placeholder="ÅÅMMDD-XXXX" style="flex:1;">
+        <button class="btn btn-primary" style="flex-shrink:0; font-size:16px; padding:0 20px;" onclick="hämtaPerson()">Hämta</button>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Förnamn</label>
+        <input type="text" id="fname">
+      </div>
+      <div class="form-group">
+        <label>Efternamn</label>
+        <input type="text" id="lname">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Postadress</label>
+      <input type="text" id="address">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Postnummer</label>
+        <input type="text" id="zip">
+      </div>
+      <div class="form-group">
+        <label>Ort</label>
+        <input type="text" id="city">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>E-post</label>
+        <input type="text" id="email">
+      </div>
+      <div class="form-group">
+        <label>Telefonnummer</label>
+        <input type="text" id="phone">
+      </div>
+    </div>
+  </div>
+
+  <!-- Förhandlingsprotokoll upload -->
+  <div class="field-card">
+    <div class="field-card-label">Förhandlingsprotokoll eller motsvarande dokument</div>
+    <div class="file-upload-zone" id="fhp-step1-upload" onclick="this.querySelector('input[type=file]').click()">
+      <div class="file-upload-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="6" width="28" height="36" rx="3"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="24" x2="32" y2="24"/><line x1="16" y1="30" x2="26" y2="30"/></svg></div>
+      <div class="file-upload-text">Dra och släpp din fil här</div>
+      <div class="file-upload-link">Välj fil</div>
+      <div class="file-upload-max">Max 15 MB</div>
+      <input type="file" style="display:none" accept=".pdf,.jpg,.png,.doc,.docx">
+    </div>
+    <div style="margin-top:16px;">
+      <label class="checkbox-option">
+        <input type="checkbox" id="no-fhp" onchange="toggleNoFhp()">
+        Jag kan inte bifoga ett förhandlingsprotokoll eller motsvarande dokument
+      </label>
+      <div id="no-fhp-info" style="display:none; margin-top:12px; padding:var(--spacing-s); background:var(--color-white); border-radius:var(--radius-sm); border:1px solid #ddd;">
+        <p style="font-size:15px; line-height:1.5; margin:0;">Kontakta vår kundtjänst på <strong>08 442 97 30</strong> eller <strong>trygghetsradet.trs@trs.se</strong> så hjälper vi dig vidare med din ansökan.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-outline" onclick="goStep(0)">← Föregående</button>
+    <div class="right-buttons">
+      <a class="cancel-link" href="#">Avbryt</a>
+      <button class="btn btn-primary" onclick="goStep(2)">Nästa →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: ANSTÄLLNING (stepper steg 2) -->
+<div class="step-content" id="step2">
+  <h2>Uppgifter om anställning som upphör</h2>
+
+  <!-- Anställningsperiod & arbetstid -->
+  <div class="field-card">
+    <div class="field-card-label">Anställningsperiod och arbetstid</div>
+    <div class="form-group">
+      <label>Anställningsdatum</label>
+      <div class="date-input-wrap">
+        <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
+        <input type="text" placeholder="åååå-mm-dd" id="emp-start" style="max-width:220px;">
+      </div>
+    </div>
+    <div class="radio-group">
+      <label>Ordinarie arbetstid</label>
+      <div class="radio-inline">
+        <label class="radio-option"><input type="radio" name="worktime" value="Heltid" onchange="toggleDeltid()"> Heltid</label>
+        <label class="radio-option"><input type="radio" name="worktime" value="Deltid" onchange="toggleDeltid()"> Deltid</label>
+      </div>
+      <div id="deltid-procent" style="display:none; margin-top:8px;">
+        <label style="font-weight:500; font-size:15px; margin-bottom:6px; display:block;">Hur många procent av heltid?</label>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <input type="number" id="deltid-procent-input" style="max-width:120px; width:100%; padding:11px 14px; border:1px solid var(--color-black); border-radius:var(--radius); font-size:16px; height:48px;"> <span>%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lön och tillägg -->
+  <div class="field-card">
+    <div class="field-card-label">Lön och tillägg</div>
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Aktuell grundlön</label>
+        <input type="text" placeholder="Kr/månad" id="salary">
+      </div>
+      <div class="form-group" style="visibility:hidden;"></div>
+    </div>
+    <p class="note-text" style="margin-top:0;">Observera att det är deltidslönen du ska ange vid deltidsanställning</p>
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:8px;">
+        <label>Har personen fasta tillägg eller förmåner?</label>
+        <input type="number" id="benefits" placeholder="Kr/månad">
+      </div>
+      <div class="form-group" style="visibility:hidden;"></div>
+    </div>
+    <p class="note-text" style="margin-top:0;">T.ex. provision, tantiem, bonus, skift, jour eller beredskap</p>
+  </div>
+
+  <!-- Övrig information om anställningen (kombinerat kort) -->
+  <div class="field-card">
+    <div class="field-card-label">Övrig information om anställningen</div>
+    <div class="radio-group">
+      <label>Har personen lönebidrag?</label>
+      <div class="radio-inline">
+        <label class="radio-option"><input type="radio" name="lonebidrag" value="Ja"> Ja</label>
+        <label class="radio-option"><input type="radio" name="lonebidrag" value="Nej"> Nej</label>
+      </div>
+    </div>
+    <div class="radio-group">
+      <label>Har personen avgångsvederlag?</label>
+      <div class="radio-inline">
+        <label class="radio-option"><input type="radio" name="avgangsvederlag" value="Ja" onchange="toggleAvgang()"> Ja</label>
+        <label class="radio-option"><input type="radio" name="avgangsvederlag" value="Nej" onchange="toggleAvgang()"> Nej</label>
+      </div>
+      <div id="avgang-months" style="display:none; margin-top:8px;">
+        <label style="font-weight:500; font-size:15px; margin-bottom:6px; display:block;">Antal månader</label>
+        <input type="number" id="avgang-months-input" style="max-width:120px; width:100%; padding:11px 14px; border:1px solid var(--color-black); border-radius:var(--radius); font-size:16px; height:48px;">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Personens senaste befattning eller yrke</label>
+      <input type="text" id="jobtitle">
+    </div>
+    <div class="radio-group">
+      <label>Är personen VD eller ägare/delägare?</label>
+      <div class="radio-inline">
+        <label class="radio-option"><input type="radio" name="vd-owner" value="Nej" checked> Nej</label>
+        <label class="radio-option"><input type="radio" name="vd-owner" value="Ja"> Ja</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-outline" onclick="goStep(1)">← Föregående</button>
+    <div class="right-buttons">
+      <a class="cancel-link" href="#">Avbryt</a>
+      <button class="btn btn-primary" onclick="goStep(3)">Nästa →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: ORSAK (stepper steg 3) -->
+<div class="step-content" id="step3">
+  <h2>Orsak till uppsägning</h2>
+
+  <!-- 1. Orsak till uppsägning – alltid synligt -->
+  <div class="field-card">
+    <div class="field-card-label">Orsak till uppsägning</div>
+    <div class="radio-group" style="margin-bottom:0;">
+      <label class="radio-option"><input type="radio" name="orsak" value="arbetsbrist" onchange="updateOrsak()"> Uppsägning på grund av arbetsbrist</label>
+      <label class="radio-option"><input type="radio" name="orsak" value="konkurs" onchange="updateOrsak()"> Konkurs - Uppsägning på grund av arbetsbrist</label>
+      <label class="radio-option"><input type="radio" name="orsak" value="sjukdom" onchange="updateOrsak()"> Uppsägning på grund av sjukdom</label>
+      <label class="radio-option"><input type="radio" name="orsak" value="allianserna" onchange="updateOrsak()"> Avslut av anställning hos Allianserna</label>
+    </div>
+  </div>
+
+  <!-- 2. Information om uppsägningen – visas när orsak är vald -->
+  <div class="field-card" id="info-card" style="display:none;">
+    <div class="field-card-label">Information om uppsägningen</div>
+    <div class="form-group" id="uppsagd-datum-group">
+      <label>Uppsagd</label>
+      <div class="date-input-wrap">
+        <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
+        <input type="text" placeholder="åååå-mm-dd" id="orsak-uppsagd" style="max-width:220px;">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Anställning upphör</label>
+      <div class="date-input-wrap">
+        <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
+        <input type="text" placeholder="åååå-mm-dd" id="orsak-upphor" style="max-width:220px;">
+      </div>
+    </div>
+    <div class="form-group" id="procent-group" style="display:none;">
+      <label>Uppsagd på hur många procent</label>
+      <div style="display:flex;align-items:center;gap:4px;">
+        <input type="number" id="orsak-procent" style="max-width:220px;"> <span>%</span>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:0;">
+      <label>Övrig information (valfritt)</label>
+      <textarea rows="4" id="orsak-ovrig"></textarea>
+    </div>
+  </div>
+
+  <!-- 3. Uppgifter om lönegaranti – visas bara för konkurs -->
+  <div class="field-card" id="lonegaranti-card" style="display:none;">
+    <div class="field-card-label">Uppgifter om lönegaranti</div>
+    <div class="bilaga-card">
+      <label class="radio-option"><input type="radio" name="bilaga-lg" value="upload" checked onchange="updateBilagaUI('lg-upload', this)"> Ladda upp uppgifter om lönegaranti nu</label>
+      <label class="radio-option"><input type="radio" name="bilaga-lg" value="post" onchange="updateBilagaUI('lg-upload', this)"> Jag skickar in uppgifter om lönegaranti per post</label>
+      <div class="file-upload-zone" id="lg-upload" onclick="this.querySelector('input[type=file]').click()">
+        <div class="file-upload-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="6" width="28" height="36" rx="3"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="24" x2="32" y2="24"/><line x1="16" y1="30" x2="26" y2="30"/></svg></div>
+        <div class="file-upload-text">Dra och släpp din fil här</div>
+        <div class="file-upload-link">Välj fil</div>
+        <div class="file-upload-max">Max 15 MB</div>
+        <input type="file" style="display:none" accept=".pdf,.jpg,.png,.doc,.docx">
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-outline" onclick="goStep(2)">← Föregående</button>
+    <div class="right-buttons">
+      <a class="cancel-link" href="#">Avbryt</a>
+      <button class="btn btn-primary" onclick="goStep(4)">Nästa →</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: GRANSKA OCH SKICKA IN (stepper steg 4) -->
+<div class="step-content" id="step4">
+  <h2>Granska och skicka in</h2>
+
+  <div class="review-section">
+    <div class="review-header">
+      <h3>1. Personuppgifter</h3>
+      <a class="review-edit" onclick="goStep(1)">Ändra ✎</a>
+    </div>
+    <div class="review-content">
+      <div class="review-row"><span class="review-label">Personnummer</span><span class="review-value">19790918-6905</span></div>
+      <div class="review-row"><span class="review-label">Namn</span><span class="review-value">Mia Living Rosell</span></div>
+      <div class="review-row"><span class="review-label">Postadress</span><span class="review-value">Högalidsgatan 40a</span></div>
+      <div class="review-row"><span class="review-label">Postnummer och ort</span><span class="review-value">117 30 Stockholm</span></div>
+      <div class="review-row"><span class="review-label">E-post</span><span class="review-value">mialiving@gmail.com</span></div>
+      <div class="review-row"><span class="review-label">Telefonnummer</span><span class="review-value">0733466855</span></div>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="review-header">
+      <h3>2. Anställning</h3>
+      <a class="review-edit" onclick="goStep(2)">Ändra ✎</a>
+    </div>
+    <div class="review-content">
+      <div class="review-row"><span class="review-label">Anställningsdatum</span><span class="review-value">2025-11-30</span></div>
+      <div class="review-row"><span class="review-label">Heltid</span><span class="review-value">Ja</span></div>
+      <div class="review-row"><span class="review-label">Grundlön</span><span class="review-value">35 000 kr/månad</span></div>
+      <div class="review-row"><span class="review-label">Fasta tillägg</span><span class="review-value">Ej ifyllt</span></div>
+      <div class="review-row"><span class="review-label">Lönebidrag</span><span class="review-value">Nej</span></div>
+      <div class="review-row"><span class="review-label">Avgångsvederlag</span><span class="review-value">Nej</span></div>
+      <div class="review-row"><span class="review-label">Befattning/yrke</span><span class="review-value">Tjänstedesigner</span></div>
+      <div class="review-row"><span class="review-label">VD eller ägare/delägare</span><span class="review-value">Nej</span></div>
+    </div>
+  </div>
+
+  <div class="review-section">
+    <div class="review-header">
+      <h3>3. Orsak</h3>
+      <a class="review-edit" onclick="goStep(3)">Ändra ✎</a>
+    </div>
+    <div class="review-content">
+      <div class="review-row"><span class="review-label">Orsak</span><span class="review-value">Konkurs - Uppsägning på grund av arbetsbrist</span></div>
+      <div class="review-row"><span class="review-label">Uppsagd</span><span class="review-value">2025-08-01</span></div>
+      <div class="review-row"><span class="review-label">Anställning upphör</span><span class="review-value">2025-11-30</span></div>
+      <div class="review-sub-heading">Bilagor</div>
+      <div class="review-row"><span class="review-label">Förhandlingsprotokoll</span><span class="review-value">Uppladdad</span></div>
+      <div class="review-row"><span class="review-label">Uppgifter om lönegaranti</span><span class="review-value">Skickas per post</span></div>
+    </div>
+  </div>
+
+  <div class="consent-box">
+    <label>
+      <input type="checkbox" id="consent" onchange="toggleSubmit()">
+      Jag intygar att dessa uppgifter är riktiga och att uppsägningen förhandlats med facklig motpart enligt gällande arbetsrättsliga regler.
+    </label>
+  </div>
+
+  <div class="submit-buttons">
+    <button class="btn btn-secondary" id="submitMoreBtn" disabled onclick="submitMore()">Spara och registrera fler</button>
+    <button class="btn btn-primary" id="submitBtn" disabled onclick="submitForm()">Spara och registrera den uppsagda och avsluta ansökan</button>
+  </div>
+
+  <div class="bottom-bar">
+    <button class="btn btn-outline" onclick="goStep(3)">← Föregående</button>
+    <div class="right-buttons">
+      <a class="cancel-link" href="#">Avbryt</a>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5: BEKRÄFTELSE -->
+<div class="step-content" id="step5">
+  <div class="confirmation-page">
+    <div class="confirmation-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>Ansökan har registrerats!</h2>
+    <p>Ansökan om stöd för den uppsagda har skickats till TRS. En bekräftelse skickas via e-post.</p>
+    <p>Du kan följa ärendet och hantera fler ansökningar via arbetsgivarportalen.</p>
+    <a href="#" class="btn btn-primary">Gå till arbetsgivarportalen →</a>
+  </div>
+</div>
+
+</div><!-- end .main -->
+
+<div class="footer">
+  <h3>Har du frågor?</h3>
+  <p>Kontakta oss på TRS: 08 442 97 30, trygghetsradet.trs@trs.se</p>
+</div>
+
+<script>
+let currentStep = 0;
+const totalSteps = 4;
+
+function goStep(n) {
+  document.getElementById('step' + currentStep).classList.remove('active');
+  document.getElementById('step' + n).classList.add('active');
+  currentStep = n;
+  // Hide stepper on step 0 (försida) and step 5 (bekräftelse)
+  document.getElementById('stepperBar').classList.toggle('hidden', n === 0 || n === 5);
+  updateStepper();
+  window.scrollTo(0, 0);
+}
+
+function updateStepper() {
+  // Stepper maps: step1->stepper1, step2->stepper2, step3->stepper3, step4->stepper4
+  for (let i = 1; i <= totalSteps; i++) {
+    const circle = document.getElementById('sc' + i);
+    const label = document.getElementById('sl' + i);
+    circle.className = 'step-circle';
+    label.className = 'step-label';
+    const item = circle.closest('.step-item');
+    item.classList.remove('done-line');
+    if (i < currentStep) {
+      circle.classList.add('done');
+      circle.textContent = '\u2713';
+      item.classList.add('done-line');
+    } else if (i === currentStep) {
+      circle.classList.add('active');
+      circle.textContent = i;
+      label.classList.add('active');
+    } else {
+      circle.textContent = i;
+    }
+  }
+}
+
+function updateChecklist() {
+  const allChecked = document.getElementById('cl1').checked &&
+                     document.getElementById('cl2').checked &&
+                     document.getElementById('cl3').checked &&
+                     document.getElementById('cl4').checked &&
+                     document.getElementById('cl5').checked;
+  document.getElementById('startBtn').disabled = !allChecked;
+}
+
+function updateOrsak() {
+  const val = document.querySelector('input[name="orsak"]:checked')?.value;
+  // Show info card when any orsak is selected
+  document.getElementById('info-card').style.display = val ? 'block' : 'none';
+  // Hide "Uppsagd" date for Allianserna
+  document.getElementById('uppsagd-datum-group').style.display = (val === 'allianserna') ? 'none' : 'block';
+  // Show procent for arbetsbrist and sjukdom (not konkurs or allianserna)
+  document.getElementById('procent-group').style.display = (val === 'arbetsbrist' || val === 'sjukdom') ? 'block' : 'none';
+  // Show lönegaranti only for konkurs
+  document.getElementById('lonegaranti-card').style.display = (val === 'konkurs') ? 'block' : 'none';
+}
+
+function toggleNoFhp() {
+  const checked = document.getElementById('no-fhp').checked;
+  document.getElementById('no-fhp-info').style.display = checked ? 'block' : 'none';
+  document.getElementById('fhp-step1-upload').style.display = checked ? 'none' : 'block';
+}
+
+function updateBilagaUI(uploadZoneId, radio) {
+  const zone = document.getElementById(uploadZoneId);
+  zone.style.display = (radio.value === 'upload') ? 'block' : 'none';
+}
+
+function toggleHelp(btn) {
+  const helpText = btn.nextElementSibling;
+  const isOpen = helpText.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+}
+
+function toggleSubmit() {
+  const checked = document.getElementById('consent').checked;
+  document.getElementById('submitBtn').disabled = !checked;
+  document.getElementById('submitMoreBtn').disabled = !checked;
+}
+
+function submitForm() {
+  goStep(5);
+}
+
+function submitMore() {
+  alert('Uppsagd registrerad. Du kan nu lägga till ytterligare en uppsagd person.');
+}
+
+function hämtaPerson() {
+  // Placeholder – would fetch person data from API
+  const pnr = document.getElementById('pnr').value;
+  if (pnr) {
+    alert('Hämtar uppgifter för ' + pnr + '…');
+  }
+}
+
+function toggleDeltid() {
+  const val = document.querySelector('input[name="worktime"]:checked')?.value;
+  document.getElementById('deltid-procent').style.display = (val === 'Deltid') ? 'block' : 'none';
+}
+
+function toggleAvgang() {
+  const val = document.querySelector('input[name="avgangsvederlag"]:checked')?.value;
+  document.getElementById('avgang-months').style.display = (val === 'Ja') ? 'block' : 'none';
+}
+</script>
+</body>
+</html>
