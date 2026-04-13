@@ -68,9 +68,9 @@
   .field-card-label { font-size: 19px; font-weight: 600; text-transform: none; letter-spacing: 0; color: var(--color-black); margin-bottom: var(--spacing-s); }
 
   /* Checklist step */
-  .checklist-item { display: flex; align-items: baseline; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e5e7eb; font-size: 16px; line-height: 24px; flex-wrap: wrap; }
+  .checklist-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e5e7eb; font-size: 16px; line-height: 24px; flex-wrap: wrap; }
   .checklist-item:last-child { border-bottom: none; }
-  .checklist-item input[type="checkbox"] { width: 22px; height: 22px; margin-top: 1px; flex-shrink: 0; accent-color: var(--color-sea-green); cursor: pointer; }
+  .checklist-item input[type="checkbox"] { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--color-sea-green); cursor: pointer; }
   .checklist-item label { cursor: pointer; flex: 1; }
   .checklist-intro { font-family: var(--font-body); font-size: 17px; margin-bottom: var(--spacing-r); line-height: 26px; }
   .checklist-gdpr { margin-top: var(--spacing-r); font-size: 16px; }
@@ -125,7 +125,7 @@
 
   /* Consent checkbox at top of step */
   .consent-top { margin-bottom: var(--spacing-r); padding: var(--spacing-s) 20px; background: var(--color-sea-green-light); border-radius: var(--radius); }
-  .consent-top label { font-size: 15px; line-height: 1.5; cursor: pointer; display: flex; align-items: baseline; gap: 10px; }
+  .consent-top label { font-size: 15px; line-height: 1.5; cursor: pointer; display: flex; align-items: flex-start; gap: 10px; }
   .consent-top input { flex-shrink: 0; accent-color: var(--color-sea-green-dark); }
 
   /* Bilaga card */
@@ -162,7 +162,7 @@
   .review-content { font-size: 16px; line-height: 1.6; }
   .review-content strong { font-weight: 600; }
   .review-row { display: flex; padding: 6px 0; }
-  .review-label { flex: 0 0 200px; font-size: 14px; color: #666; }
+  .review-label { flex: 0 0 200px; font-size: 16px; color: #666; }
   .review-value { flex: 1; font-size: 16px; color: var(--color-black); }
   .review-sub-heading { font-weight: 600; font-size: 15px; color: var(--color-black); margin-top: 16px; margin-bottom: 8px; padding-top: 12px; border-top: 1px solid #eee; }
   .consent-box { margin: var(--spacing-r) 0; }
@@ -246,15 +246,14 @@
 
 <!-- STEP 0: FÖRSIDA (ej i stepper) -->
 <div class="step-content active" id="step0">
-  <h2>Ansökan om stöd (arbetsgivare)</h2>
+  <h2>Ansökan om omställningsstöd för uppsagd medarbetare</h2>
   <p style="font-size:17px; line-height:1.6; margin-bottom:var(--spacing-r);">Här ansöker du som arbetsgivare om stöd för uppsagda medarbetare i din organisation.</p>
 
   <div class="info-box">
-    <h3 style="margin-top:0;">Att tänka på vid uppsägning</h3>
-    <p>Gör allt i rätt ordning:</p>
+    <h3 style="margin-top:0; font-size:19px;">Att tänka på vid uppsägning - gör allt i rätt ordning</h3>
     <ol style="padding-left:20px; font-size:15px; line-height:1.7;">
       <li style="margin-bottom:4px;">Kontakta din arbetsgivarorganisation för att processen ska gå rätt till arbetsrättsligt. Du behöver förhandla med facket. Ni ska vara överens om att arbetsbrist föreligger (eller sjukdom/ohälsa) och du ska bifoga ett förhandlingsprotokoll till ansökan.</li>
-      <li style="margin-bottom:4px;">Du som arbetsgivare kan få stöd av TRS inför uppsägningen, för att processen ska bli så bra som möjligt för alla inblandade. <a href="#">Kontakta våra rådgivare.</a></li>
+      <li style="margin-bottom:4px;">Om du har ett flertal uppsägningar så erbjuder TRS ett utökat stöd för dig som arbetsgivare gällande hur du hanterar omställningsprocessen och optimerar stödet för de uppsagda. <a href="#">Kontakta våra rådgivare</a> för mer information.</li>
       <li style="margin-bottom:4px;">Var informerad om det stöd TRS erbjuder uppsagda. <a href="#">Du hittar mer information här.</a></li>
       <li style="margin-bottom:4px;">För den som blir uppsagd på grund av arbetsbrist eller sjukdom måste arbetstiden ha varit minst åtta timmer per vecka.</li>
     </ol>
@@ -271,7 +270,7 @@
     </div>
     <div class="checklist-item">
       <input type="checkbox" id="cl2" onchange="updateChecklist()">
-      <label for="cl2">Personnummer, namn, adress och en giltig e-postadress till den som är uppsagd (se till att e-postadressen gäller efter arbetets avslut)</label>
+      <label for="cl2">Personnummer, namn, adress och en giltig e-postadress till den som är uppsagd. Se till att e-postadressen gäller efter arbetets avslut.</label>
     </div>
     <div class="checklist-item">
       <input type="checkbox" id="cl3" onchange="updateChecklist()">
@@ -306,20 +305,28 @@
 
   <div class="consent-top">
     <label>
-      <input type="checkbox" id="gdprConsent">
+      <input type="checkbox" id="gdprConsent" style="width:22px; height:22px;">
       Jag har fått samtycke från den som sägs upp att få skicka in personuppgifterna till Trygghetsrådet TRS. Den uppsagda är medveten om att TRS kommer att lagra personuppgifterna i den omfattning som krävs för att TRS ska kunna ge stöd.
     </label>
   </div>
 
   <div class="field-card">
-    <div class="field-card-label">Kontaktuppgifter</div>
-    <div class="form-group">
+    <div class="form-group" style="margin-bottom:0;">
       <label>Personnummer</label>
       <div style="display:flex; gap:var(--spacing-s); align-items:flex-start; max-width:50%;">
-        <input type="text" id="pnr" placeholder="ÅÅMMDD-XXXX" style="flex:1;">
-        <button class="btn btn-primary" style="flex-shrink:0; font-size:16px; padding:0 20px;" onclick="hämtaPerson()">Hämta</button>
+        <div style="position:relative; flex:1;">
+          <input type="text" id="pnr" placeholder="ÅÅMMDD-XXXX" style="width:100%; padding-right:44px;">
+          <span id="pnr-check" style="display:none; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--color-sea-green-dark);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </span>
+        </div>
+        <button class="btn btn-primary" style="flex-shrink:0; font-size:16px; padding:0 20px;" onclick="verifieraPerson()">Verifiera</button>
       </div>
     </div>
+  </div>
+
+  <div class="field-card">
+    <div class="field-card-label">Kontaktuppgifter</div>
     <div class="form-row">
       <div class="form-group">
         <label>Förnamn</label>
@@ -359,6 +366,7 @@
   <!-- Förhandlingsprotokoll upload -->
   <div class="field-card">
     <div class="field-card-label">Förhandlingsprotokoll eller motsvarande dokument</div>
+    <p style="font-size:15px; line-height:1.5; margin-bottom:var(--spacing-s);">Utan förhandlingsprotokoll behöver du ladda upp ett uppsägningsbevis eller annat dokument som styrker uppsägningen. Andra formella handlingar är uppgifter om lönegaranti vid konkurs och intyg som stärker sjukdom/ohälsa och arbetsförmågans omfattning (vid uppsägning på grund av sjukdom).</p>
     <div class="file-upload-zone" id="fhp-step1-upload" onclick="this.querySelector('input[type=file]').click()">
       <div class="file-upload-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="10" y="6" width="28" height="36" rx="3"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="24" x2="32" y2="24"/><line x1="16" y1="30" x2="26" y2="30"/></svg></div>
       <div class="file-upload-text">Dra och släpp din fil här</div>
@@ -367,9 +375,9 @@
       <input type="file" style="display:none" accept=".pdf,.jpg,.png,.doc,.docx">
     </div>
     <div style="margin-top:16px;">
-      <label class="checkbox-option">
-        <input type="checkbox" id="no-fhp" onchange="toggleNoFhp()">
-        Jag kan inte bifoga ett förhandlingsprotokoll eller motsvarande dokument
+      <label class="checkbox-option" style="display:flex; align-items:flex-start; gap:12px;">
+        <input type="checkbox" id="no-fhp" onchange="toggleNoFhp()" style="width:22px; height:22px; margin-right:0; flex-shrink:0;">
+        <span>Jag kan inte bifoga ett förhandlingsprotokoll eller motsvarande dokument</span>
       </label>
       <div id="no-fhp-info" style="display:none; margin-top:12px; padding:var(--spacing-s); background:var(--color-white); border-radius:var(--radius-sm); border:1px solid #ddd;">
         <p style="font-size:15px; line-height:1.5; margin:0;">Kontakta vår kundtjänst på <strong>08 442 97 30</strong> eller <strong>trygghetsradet.trs@trs.se</strong> så hjälper vi dig vidare med din ansökan.</p>
@@ -378,17 +386,17 @@
   </div>
 
   <div class="bottom-bar">
-    <button class="btn btn-outline" onclick="goStep(0)">← Föregående</button>
+    <button class="btn btn-outline" onclick="goStep(0)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Avbryt</a>
-      <button class="btn btn-primary" onclick="goStep(2)">Nästa →</button>
+      <a class="cancel-link" href="#">Spara och komplettera senare</a>
+      <button class="btn btn-primary" onclick="goStep(2)">Nästa steg</button>
     </div>
   </div>
 </div>
 
 <!-- STEP 2: ANSTÄLLNING (stepper steg 2) -->
 <div class="step-content" id="step2">
-  <h2>Uppgifter om anställning som upphör</h2>
+  <h2>Uppgifter om den anställning som upphör</h2>
 
   <!-- Anställningsperiod & arbetstid -->
   <div class="field-card">
@@ -397,7 +405,7 @@
       <label>Anställningsdatum</label>
       <div class="date-input-wrap">
         <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
-        <input type="text" placeholder="åååå-mm-dd" id="emp-start" style="max-width:220px;">
+        <input type="text" id="emp-start" style="max-width:220px;">
       </div>
     </div>
     <div class="radio-group">
@@ -419,21 +427,21 @@
   <div class="field-card">
     <div class="field-card-label">Lön och tillägg</div>
     <div class="form-row">
-      <div class="form-group" style="margin-bottom:8px;">
+      <div class="form-group">
         <label>Aktuell grundlön</label>
+        <p class="helper-text">Observera att det är deltidslönen du ska ange vid deltidsanställning</p>
         <input type="text" placeholder="Kr/månad" id="salary">
       </div>
       <div class="form-group" style="visibility:hidden;"></div>
     </div>
-    <p class="note-text" style="margin-top:0;">Observera att det är deltidslönen du ska ange vid deltidsanställning</p>
     <div class="form-row">
-      <div class="form-group" style="margin-bottom:8px;">
+      <div class="form-group" style="margin-bottom:0;">
         <label>Har personen fasta tillägg eller förmåner?</label>
+        <p class="helper-text">T.ex. provision, tantiem, bonus, skift, jour eller beredskap</p>
         <input type="number" id="benefits" placeholder="Kr/månad">
       </div>
       <div class="form-group" style="visibility:hidden;"></div>
     </div>
-    <p class="note-text" style="margin-top:0;">T.ex. provision, tantiem, bonus, skift, jour eller beredskap</p>
   </div>
 
   <!-- Övrig information om anställningen (kombinerat kort) -->
@@ -471,10 +479,10 @@
   </div>
 
   <div class="bottom-bar">
-    <button class="btn btn-outline" onclick="goStep(1)">← Föregående</button>
+    <button class="btn btn-outline" onclick="goStep(1)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Avbryt</a>
-      <button class="btn btn-primary" onclick="goStep(3)">Nästa →</button>
+      <a class="cancel-link" href="#">Spara och komplettera senare</a>
+      <button class="btn btn-primary" onclick="goStep(3)">Nästa steg</button>
     </div>
   </div>
 </div>
@@ -490,7 +498,7 @@
       <label class="radio-option"><input type="radio" name="orsak" value="arbetsbrist" onchange="updateOrsak()"> Uppsägning på grund av arbetsbrist</label>
       <label class="radio-option"><input type="radio" name="orsak" value="konkurs" onchange="updateOrsak()"> Konkurs - Uppsägning på grund av arbetsbrist</label>
       <label class="radio-option"><input type="radio" name="orsak" value="sjukdom" onchange="updateOrsak()"> Uppsägning på grund av sjukdom</label>
-      <label class="radio-option"><input type="radio" name="orsak" value="allianserna" onchange="updateOrsak()"> Avslut av anställning hos Allianserna</label>
+      <label class="radio-option"><input type="radio" name="orsak" value="allianserna" onchange="updateOrsak()"> Avslut av anställning hos Dansalliansen, Musikalliansen eller Teateralliansen</label>
     </div>
   </div>
 
@@ -501,14 +509,14 @@
       <label>Uppsagd</label>
       <div class="date-input-wrap">
         <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
-        <input type="text" placeholder="åååå-mm-dd" id="orsak-uppsagd" style="max-width:220px;">
+        <input type="text" id="orsak-uppsagd" style="max-width:220px;">
       </div>
     </div>
     <div class="form-group">
       <label>Anställning upphör</label>
       <div class="date-input-wrap">
         <svg class="date-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><rect x="7" y="14" width="3" height="3"/></svg>
-        <input type="text" placeholder="åååå-mm-dd" id="orsak-upphor" style="max-width:220px;">
+        <input type="text" id="orsak-upphor" style="max-width:220px;">
       </div>
     </div>
     <div class="form-group" id="procent-group" style="display:none;">
@@ -540,10 +548,10 @@
   </div>
 
   <div class="bottom-bar">
-    <button class="btn btn-outline" onclick="goStep(2)">← Föregående</button>
+    <button class="btn btn-outline" onclick="goStep(2)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Avbryt</a>
-      <button class="btn btn-primary" onclick="goStep(4)">Nästa →</button>
+      <a class="cancel-link" href="#">Spara och komplettera senare</a>
+      <button class="btn btn-primary" onclick="goStep(4)">Nästa steg</button>
     </div>
   </div>
 </div>
@@ -555,7 +563,7 @@
   <div class="review-section">
     <div class="review-header">
       <h3>1. Personuppgifter</h3>
-      <a class="review-edit" onclick="goStep(1)">Ändra ✎</a>
+      <a class="review-edit" onclick="goStep(1)">Ändra</a>
     </div>
     <div class="review-content">
       <div class="review-row"><span class="review-label">Personnummer</span><span class="review-value">19850312-4521</span></div>
@@ -570,7 +578,7 @@
   <div class="review-section">
     <div class="review-header">
       <h3>2. Anställning</h3>
-      <a class="review-edit" onclick="goStep(2)">Ändra ✎</a>
+      <a class="review-edit" onclick="goStep(2)">Ändra</a>
     </div>
     <div class="review-content">
       <div class="review-row"><span class="review-label">Anställningsdatum</span><span class="review-value">2025-11-30</span></div>
@@ -587,7 +595,7 @@
   <div class="review-section">
     <div class="review-header">
       <h3>3. Orsak</h3>
-      <a class="review-edit" onclick="goStep(3)">Ändra ✎</a>
+      <a class="review-edit" onclick="goStep(3)">Ändra</a>
     </div>
     <div class="review-content">
       <div class="review-row"><span class="review-label">Orsak</span><span class="review-value">Konkurs - Uppsägning på grund av arbetsbrist</span></div>
@@ -599,22 +607,18 @@
     </div>
   </div>
 
-  <div class="consent-box">
-    <label>
-      <input type="checkbox" id="consent" onchange="toggleSubmit()">
-      Jag intygar att dessa uppgifter är riktiga och att uppsägningen förhandlats med facklig motpart enligt gällande arbetsrättsliga regler.
+  <div class="consent-box" style="background:var(--color-sea-green-light); border-radius:var(--radius); padding:var(--spacing-s) 20px;">
+    <label style="display:flex; align-items:flex-start; gap:12px;">
+      <input type="checkbox" id="consent" onchange="toggleSubmit()" style="width:22px; height:22px; margin-right:0; flex-shrink:0; accent-color:var(--color-sea-green-dark);">
+      <span>Jag intygar att dessa uppgifter är riktiga och att uppsägningen förhandlats med facklig motpart enligt gällande arbetsrättsliga regler.</span>
     </label>
   </div>
 
-  <div class="submit-buttons">
-    <button class="btn btn-secondary" id="submitMoreBtn" disabled onclick="submitMore()">Spara och registrera fler</button>
-    <button class="btn btn-primary" id="submitBtn" disabled onclick="submitForm()">Spara och registrera den uppsagda och avsluta ansökan</button>
-  </div>
-
   <div class="bottom-bar">
-    <button class="btn btn-outline" onclick="goStep(3)">← Föregående</button>
+    <button class="btn btn-outline" onclick="goStep(3)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Avbryt</a>
+      <a class="cancel-link" href="#">Spara och komplettera senare</a>
+      <button class="btn btn-primary" id="submitBtn" disabled onclick="submitForm()">Skicka in och avsluta ansökan</button>
     </div>
   </div>
 </div>
@@ -717,22 +721,17 @@ function toggleHelp(btn) {
 function toggleSubmit() {
   const checked = document.getElementById('consent').checked;
   document.getElementById('submitBtn').disabled = !checked;
-  document.getElementById('submitMoreBtn').disabled = !checked;
 }
 
 function submitForm() {
   goStep(5);
 }
 
-function submitMore() {
-  alert('Uppsagd registrerad. Du kan nu lägga till ytterligare en uppsagd person.');
-}
-
-function hämtaPerson() {
-  // Placeholder – would fetch person data from API
+function verifieraPerson() {
+  // Placeholder – would check if person is already in stöd via API
   const pnr = document.getElementById('pnr').value;
   if (pnr) {
-    alert('Hämtar uppgifter för ' + pnr + '…');
+    document.getElementById('pnr-check').style.display = 'inline-flex';
   }
 }
 
