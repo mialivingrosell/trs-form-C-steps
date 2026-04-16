@@ -295,6 +295,8 @@
     <a href="#">Här kan du läsa hur TRS behandlar personuppgifter - GDPR</a>
   </div>
 
+  <p style="font-size:15px; color:#666; margin-top:var(--spacing-s); line-height:1.5;">Påbörjad ansökan sparas och kan kompletteras vid ett senare tillfälle.</p>
+
   <div class="bottom-bar">
     <div></div>
     <div class="right-buttons">
@@ -392,7 +394,6 @@
   <div class="bottom-bar">
     <button class="btn btn-outline" onclick="goStep(0)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Spara och komplettera senare</a>
       <button class="btn btn-primary" onclick="goStep(2)">Nästa steg</button>
     </div>
   </div>
@@ -485,10 +486,10 @@
   <div class="bottom-bar">
     <button class="btn btn-outline" onclick="goStep(1)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Spara och komplettera senare</a>
       <button class="btn btn-primary" onclick="goStep(3)">Nästa steg</button>
     </div>
   </div>
+  <p style="font-size:14px; color:#666; margin-top:12px; display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sea-green-dark)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ansökan har sparats</p>
 </div>
 
 <!-- STEP 3: ORSAK (stepper steg 3) -->
@@ -560,10 +561,10 @@
   <div class="bottom-bar">
     <button class="btn btn-outline" onclick="goStep(2)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Spara och komplettera senare</a>
       <button class="btn btn-primary" onclick="goStep(4)">Nästa steg</button>
     </div>
   </div>
+  <p style="font-size:14px; color:#666; margin-top:12px; display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sea-green-dark)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ansökan har sparats</p>
 </div>
 
 <!-- STEP 4: GRANSKA OCH SKICKA IN (stepper steg 4) -->
@@ -627,10 +628,10 @@
   <div class="bottom-bar">
     <button class="btn btn-outline" onclick="goStep(3)">Föregående</button>
     <div class="right-buttons">
-      <a class="cancel-link" href="#">Spara och komplettera senare</a>
       <button class="btn btn-primary" id="submitBtn" disabled onclick="submitForm()">Skicka in och avsluta ansökan</button>
     </div>
   </div>
+  <p style="font-size:14px; color:#666; margin-top:12px; display:flex; align-items:center; gap:6px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-sea-green-dark)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ansökan har sparats</p>
 </div>
 
 <!-- STEP 5: BEKRÄFTELSE -->
